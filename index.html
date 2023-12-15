@@ -3,65 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNN Predictor</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <title>Random Images from Pinterest</title>
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
+    <h1>프로미스나인 송하영의 무작위 이미지</h1>
+    <div id="image-container"></div>
 
-<h1>KNN Predictor</h1>
+    <script>
+        // 핀터레스트에서 이미지를 검색하는 함수
+        function searchPinterest(query, count) {
+            // Pinterest 검색 URL
+            const pinterestURL = `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`;
 
-<!-- Form to take user input -->
-<form id="knnForm">
-    <label for="feature1">Feature 1:</label>
-    <input type="number" step="any" id="feature1" name="feature1" required>
+            // Pinterest 검색 결과를 가져오기 위한 iframe 생성
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = pinterestURL;
+            document.body.appendChild(iframe);
 
-    <label for="feature2">Feature 2:</label>
-    <input type="number" step="any" id="feature2" name="feature2" required>
+            // iframe이 로드되면 결과를 읽어오는 함수 호출
+            iframe.onload = function() {
+                const pins = iframe.contentDocument.querySelectorAll('.GrowthUnauthPinImage');
+                displayRandomImages(pins, count);
 
-    <!-- Add more input fields as needed -->
+                // 사용이 끝난 iframe 제거
+                document.body.removeChild(iframe);
+            };
+        }
 
-    <label for="k">Number of Neighbors (k):</label>
-    <input type="number" id="k" name="k" required>
+        // 무작위 이미지를 표시하는 함수
+        function displayRandomImages(images, count) {
+            const imageContainer = document.getElementById('image-container');
+            const randomImages = getRandomElements(images, count);
 
-    <button type="button" onclick="predict()">Predict</button>
-</form>
+            randomImages.forEach(image => {
+                const imageUrl = image.getAttribute('src');
+                const imgElement = document.createElement('img');
+                imgElement.src = imageUrl;
+                imageContainer.appendChild(imgElement);
+            });
+        }
 
-<!-- Display area for the prediction result -->
-<div id="predictionResult"></div>
+        // 배열에서 무작위 요소를 선택하는 함수
+        function getRandomElements(array, count) {
+            const shuffledArray = array.sort(() => Math.random() - 0.5);
+            return shuffledArray.slice(0, count);
+        }
 
-<script>
-    // Sample dataset
-    const dataset = {
-        features: tf.tensor2d([
-            [1.0, 2.0],   // Example 1
-            [2.0, 3.0],   // Example 2
-            // Add more examples as needed
-        ]),
-        labels: tf.tensor1d([0, 1 /* Add more labels as needed */])
-    };
-
-    // KNN prediction function
-    function predict() {
-        const feature1 = parseFloat(document.getElementById("feature1").value);
-        const feature2 = parseFloat(document.getElementById("feature2").value);
-        const k = parseInt(document.getElementById("k").value);
-
-        const input = tf.tensor2d([[feature1, feature2]]);
-        const distances = dataset.features.sub(input).square().sum(1).sqrt();
-        const topKIndices = distances.argTopK(k).dataSync();
-
-        const topKLabels = Array.from(topKIndices, index => dataset.labels.dataSync()[index]);
-        const predictedLabel = mode(topKLabels);
-
-        document.getElementById("predictionResult").innerText = `Predicted Label: ${predictedLabel}`;
-    }
-
-    // Function to find the mode (most common) value in an array
-    function mode(arr) {
-        return arr.reduce((a, b, i, arr) =>
-            (arr.filter(v => v === a).length >= arr.filter(v => v === b).length) ? a : b, null);
-    }
-</script>
-
+        // 페이지 로드 시 검색 실행
+        window.onload = function() {
+            searchPinterest('프로미스나인 송하영', 5);
+        };
+    </script>
 </body>
 </html>
