@@ -3,45 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaflet Map</title>
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha384-GLhlTQ8iEWA+9QqrsT6L7u6Z5P7FdhHho5f8WH1E5z5t9z9v6EGGoqZtMWPe1xU" crossorigin="anonymous">
+    <title>Leaflet Map with User Location</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
 </head>
 <body>
 
-<div id="map" style="height: 400px;"></div>
+<div id="map"></div>
 
-<!-- Leaflet JavaScript -->
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha384-MCw98/SFnGE8fJT3GXG/mFqGoZAd93jGl5bOpgC5RQQmCCDKC8E3ZFw=="
-    crossorigin="anonymous"></script>
-
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    // Leaflet Map 초기화
-    var map = L.map('map').setView([0, 0], 2); // 초기 위치는 0, 0이며 줌 레벨은 2입니다.
+    // Leaflet을 이용한 지도 초기화
+    var map = L.map('map').setView([37.5665, 126.9780], 13);
 
     // OpenStreetMap 타일 레이어 추가
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // 사용자의 위치 및 오차 반경 표시
-    navigator.geolocation.getCurrentPosition(function (position) {
-        var latlng = [position.coords.latitude, position.coords.longitude];
+    // 사용자의 위치를 마커로 표시
+    function onLocationFound(e) {
+        var radius = e.accuracy / 2;
 
-        // 사용자의 위치 마커 추가
-        L.marker(latlng).addTo(map)
-            .bindPopup('Your Location').openPopup();
+        L.marker(e.latlng).addTo(map)
+            .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-        // 오차 반경을 원 형태로 표시
-        L.circle(latlng, {
-            color: 'red',
-            fillColor: '#f03',
-            fillOpacity: 0.5,
-            radius: position.coords.accuracy // 오차 반경 값 설정
-        }).addTo(map);
-    }, function (error) {
-        console.error('Error getting user location:', error.message);
-    });
+        L.circle(e.latlng, radius).addTo(map);
+    }
+
+    // 사용자의 위치를 얻는데 실패했을 때의 처리
+    function onLocationError(e) {
+        alert(e.message);
+    }
+
+    // 사용자의 위치를 얻기 위해 Geolocation API 사용
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+
+    map.locate({setView: true, maxZoom: 16});
 </script>
 
 </body>
