@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
-      height: 600px;
+      height: 800px;
     }
   </style>
 </head>
@@ -274,11 +274,14 @@
     function showUserLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
+          
           var userCoordinates = [position.coords.latitude, position.coords.longitude];
+          
           var userMarker = L.marker(userCoordinates, { icon: pigIcon }).addTo(map);
           
           userMarker.bindPopup('당신의 위치').openPopup();
           map.setView(userCoordinates, 15); // 사용자의 위치로 지도 이동 (15는 축적 값)
+          
         }, function (error) {
           console.error('현재 위치를 가져오는 데 실패했습니다:', error);
         });
@@ -286,29 +289,6 @@
         console.error('Geolocation이 지원되지 않습니다.');
       }
     }
-
-    // 페이지 로드 시 사용자의 위치를 가져와 지도에 표시
-    showUserLocation();
-
-    function onLocationFound(e) {
-        var radius = e.accuracy / 2;
-
-        L.marker(e.latlng).addTo(map)
-            .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
-        L.circle(e.latlng, radius).addTo(map);
-    }
-
-    // 사용자의 위치를 얻는데 실패했을 때의 처리
-    function onLocationError(e) {
-        alert(e.message);
-    }
-
-    // 사용자의 위치를 얻기 위해 Geolocation API 사용
-    map.on('locationfound', onLocationFound);
-    map.on('locationerror', onLocationError);
-
-    map.locate({setView: true, maxZoom: 16});
 
     
   </script>
