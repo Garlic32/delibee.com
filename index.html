@@ -259,6 +259,17 @@
       popupAnchor: [0, -32] // 팝업이 표시될 위치 설정
     });
 
+    var pigIcon = L.icon({
+      iconUrl: 'https://i.ibb.co/178wqt0/Pngtree-cute-pretty-pig-face-clipart-5902748.png',
+      iconSize: [40, 40], // 아이콘 크기 조정
+      iconAnchor: [18, 45], // 마커의 중심을 설정
+      popupAnchor: [0, -32] // 팝업이 표시될 위치 설정
+    });
+
+
+
+  
+
     // 좌표와 이름을 이용하여 마커 생성 및 지도에 추가
     locations.forEach(function (location) {
       var marker = L.marker(location.coordinates, {icon: customIcon}).addTo(markers);
@@ -284,9 +295,12 @@
     function showUserLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
+          
           var userCoordinates = [position.coords.latitude, position.coords.longitude];
-          var userMarker = L.marker(userCoordinates, { icon: L.divIcon({ className: 'user-marker', iconSize: [30, 30], html: '당신의 위치' }) }).addTo(map);
-          userMarker.bindPopup('당신의 위치').openPopup();
+          
+          var usermarker = L.marker(userCoordinates, {icon: pigIcon}).addTo(markers);
+          
+          userMarker.bindPopup('YOU').openPopup();
           map.setView(userCoordinates, 15); // 사용자의 위치로 지도 이동 (15는 축적 값)
         }, function (error) {
           console.error('현재 위치를 가져오는 데 실패했습니다:', error);
