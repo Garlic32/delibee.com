@@ -1,317 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>마늘지도</title>
-  <!-- Leaflet CSS 파일 -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      
-    }
-
-    #search {
-      padding: 10px;
-      margin-left:  
-      box-sizing: border-box;
-      align-tiem: center;
-
-    }
-
-    #map {
-      margin-top: 20px;
-      height: 800px;
-    }
-
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map</title>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha384-GLhlTQ8iEWA+9QqrsT6L7u6Z5P7FdhHho5f8WH1E5z5t9z9v6EGGoqZtMWPe1xU" crossorigin="anonymous">
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha384-MCw98/SFnGE8fJT3GXG/mFqGoZAd93jGl5bOpgC5RQQmCCDKC8E3ZFw=="
+        crossorigin="anonymous"></script>
 </head>
 <body>
 
-  
-  <div>
-    <label for="search"> 식당 검색: </label>
-    <input type="text" id="search" placeholder="식당 이름 입력" oninput="searchMarkers()" />
-  </div>
-  
-  <div id="map"></div>
+<div id="map" style="height: 400px;"></div>
 
-  <!-- Leaflet JS 파일 -->
-  
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  
-  <script>
-    // 서울의 좌표
-    var seoulCoordinates = [37.5665, 126.9780];
-
-    // Leaflet을 사용하여 지도 초기화, 서울을 중심으로 10km 축적
-    var map = L.map('map').setView(seoulCoordinates, 10);
+<script>
+    // Leaflet Map 초기화
+    var map = L.map('map').setView([0, 0], 2); // 초기 위치는 0, 0이며 줌 레벨은 2입니다.
 
     // OpenStreetMap 타일 레이어 추가
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
 
-    // 좌표 데이터 및 마커 이름
-    var locations = [
-      { name: '식당1', coordinates: [36.8264333, 128.6049139] },
-      { name: '식당2', coordinates: [37.486269, 126.5594044] },
-      { name: '식당3', coordinates: [35.1444473, 126.9136212] },
-      
-      { name: '	[하남돼지집] 영주가흥점'		, coordinates: [	36.8264333	,	128.6049139	] },
-      { name: '	[하남돼지집] 영종하늘도시점'		, coordinates: [	37.486269	,	126.5594044	] },
-      { name: '	[하남돼지집] 광주충장로점'		, coordinates: [	35.1444473	,	126.9136212	] },
-      { name: '	[하남돼지집] 안산선부점'		, coordinates: [	37.33438115	,	126.8098922	] },
-      { name: '	[하남돼지집] 양주옥정점'		, coordinates: [	37.8211939	,	127.0946923	] },
-      { name: '	[하남돼지집] 천안불당점'		, coordinates: [	36.8114087	,	127.1077223	] },
-      { name: '	[하남돼지집] 루원시티점'		, coordinates: [	37.5282029	,	126.6708808	] },
-      { name: '	[하남돼지집] 녹번역점'		, coordinates: [	37.6178936	,	126.9220735	] },
-      { name: '	[하남돼지집] 의정부신한대점'		, coordinates: [	37.757916	,	127.0427453	] },
-      { name: '	[하남돼지집] 돌곶이역점'		, coordinates: [	37.610891	,	127.0565335	] },
-      { name: '	[하남돼지집] 수원삼성점'		, coordinates: [	37.2592419	,	127.0415885	] },
-      { name: '	[하남돼지집] 양평점'		, coordinates: [	37.5296552	,	126.8928705	] },
-      { name: '	[하남돼지집] 가좌역점'		, coordinates: [	37.5701405	,	126.9161155	] },
-      { name: '	[하남돼지집] 운정해오름마을점'		, coordinates: [	37.7332694	,	126.7283665	] },
-      { name: '	[하남돼지집] 동해대동점'		, coordinates: [	37.4891152	,	129.1072754	] },
-      { name: '	[하남돼지집] 고덕역점'		, coordinates: [	37.5528802	,	127.1552384	] },
-      { name: '	[하남돼지집] 속초청초호점'		, coordinates: [	38.1950715	,	128.5802773	] },
-      { name: '	[하남돼지집] 지축역점'		, coordinates: [	37.650143	,	126.9272555	] },
-      { name: '	[하남돼지집] 안성아양점'		, coordinates: [	37.0105936	,	127.2522443	] },
-      { name: '	[하남돼지집] 김포구래점'		, coordinates: [	37.64379635	,	126.6223781	] },
-      { name: '	[하남돼지집] 송도랜드마크점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 화성송산점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 원주기업도시점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 동대문점'		, coordinates: [	37.567008	,	127.0071137	] },
-      { name: '	[하남돼지집] 검단신도시점'		, coordinates: [	37.5944998	,	126.7154297	] },
-      { name: '	[하남돼지집] 여주교동점'		, coordinates: [	37.2941779	,	127.6359738	] },
-      { name: '	[하남돼지집] 미사숲공원점'		, coordinates: [	37.558049	,	127.1891188	] },
-      { name: '	[하남돼지집] 목포남악도청점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 송도롯데몰점'		, coordinates: [	37.3848241	,	126.6447272	] },
-      { name: '	[하남돼지집] 수원호매실점'		, coordinates: [	37.2736847	,	126.9381825	] },
-      { name: '	[하남돼지집] 순천신대점'		, coordinates: [	34.9279911	,	127.5535678	] },
-      { name: '	[하남돼지집] 검단사거리역점'		, coordinates: [	37.6019228	,	126.6537767	] },
-      { name: '	[하남돼지집] 인하대역점'		, coordinates: [	37.4484021	,	126.6488203	] },
-      { name: '	[하남돼지집] 인천당하점'		, coordinates: [	37.5940932	,	126.691389	] },
-      { name: '	[하남돼지집] 다산테라타워점'		, coordinates: [	37.6018536	,	127.174053	] },
-      { name: '	[하남돼지집] 평택고덕점'		, coordinates: [	37.03866515	,	127.0477016	] },
-      { name: '	[하남돼지집] 충주호암점'		, coordinates: [	36.9564388	,	127.9235509	] },
-      { name: '	[하남돼지집] 동탄대로점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 일산킨텍스점'		, coordinates: [	37.6610457	,	126.7455422	] },
-      { name: '	[하남돼지집] 종로꽃시장점'		, coordinates: [	37.5728213	,	127.0067902	] },
-      { name: '	[하남돼지집] 월곡역점'		, coordinates: [	37.5964405	,	127.0381623	] },
-      { name: '	[하남돼지집] 대전대흥점'		, coordinates: [	36.3271322	,	127.424748	] },
-      { name: '	[하남돼지집] 광양중마점'		, coordinates: [	34.9338434	,	127.6987087	] },
-      { name: '	[하남돼지집] 송파석촌점'		, coordinates: [	37.5043449	,	127.1002756	] },
-      { name: '	[하남돼지집] 화성시청점'		, coordinates: [	37.2027717	,	126.8268362	] },
-      { name: '	[하남돼지집] 풍산직영점'		, coordinates: [	37.5640385	,	127.189831	] },
-      { name: '	[하남돼지집] 충북혁신도시점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 인천주안역점'		, coordinates: [	37.4618661	,	126.6812866	] },
-      { name: '	[하남돼지집] 군산수송동점'		, coordinates: [	35.9655787	,	126.7172621	] },
-      { name: '	[하남돼지집] 부천옥길점'		, coordinates: [	37.4827849	,	126.8135069	] },
-      { name: '	[하남돼지집] 홍대입구역점'		, coordinates: [	37.5580018	,	126.9243331	] },
-      { name: '	[하남돼지집] 안산중앙역점'		, coordinates: [	37.3181119	,	126.8398359	] },
-      { name: '	[하남돼지집] 광주초월점'		, coordinates: [	37.3771041	,	127.2917513	] },
-      { name: '	[하남돼지집] 시흥능곡역점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 김포고촌점'		, coordinates: [	37.5988206	,	126.7650939	] },
-      { name: '	[하남돼지집] 인천부평청천점'		, coordinates: [	37.5150029	,	126.7043548	] },
-      { name: '	[하남돼지집] 김포풍무점'		, coordinates: [	37.607157	,	126.7250661	] },
-      { name: '	[하남돼지집] 청주오창동점'		, coordinates: [	36.74238405	,	127.4545023	] },
-      { name: '	[하남돼지집] 송도센트럴파크점'		, coordinates: [	37.3930329	,	126.642198	] },
-      { name: '	[하남돼지집] 발산점'		, coordinates: [	37.5588719	,	126.84201	] },
-      { name: '	[하남돼지집] 시흥은계점'		, coordinates: [	37.4374234	,	126.80197	] },
-      { name: '	[하남돼지집] 가로수길점'		, coordinates: [	37.5186963	,	127.024001	] },
-      { name: '	[하남돼지집] 송도트리플스트리트점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 광명역점'		, coordinates: [	37.4227947	,	126.8839773	] },
-      { name: '	[하남돼지집] 광화문점'		, coordinates: [	37.5748012	,	126.9731609	] },
-      { name: '	[하남돼지집] 왕십리뉴타운점'		, coordinates: [	37.5646347	,	127.0287135	] },
-      { name: '	[하남돼지집] 모란점'		, coordinates: [	37.4214306	,	127.1289439	] },
-      { name: '	[하남돼지집] 인천삼산점'		, coordinates: [	37.5074351	,	126.734493	] },
-      { name: '	[하남돼지집] 남양주다산점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 동탄영천점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 부천역점'		, coordinates: [	37.4872236	,	126.7815948	] },
-      { name: '	[하남돼지집] 문래점'		, coordinates: [	37.5296552	,	126.8928705	] },
-      { name: '	[하남돼지집] 용인역북점'		, coordinates: [	37.2301816	,	127.186715	] },
-      { name: '	[하남돼지집] 신촌점'		, coordinates: [	37.551341	,	126.9327908	] },
-      { name: '	[하남돼지집] 대치은마점'		, coordinates: [	37.49873275	,	127.062029	] },
-      { name: '	[하남돼지집] 화성향남점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 미사역점'		, coordinates: [	37.5560037	,	127.1922578	] },
-      { name: '	[하남돼지집] 계양구청점'		, coordinates: [	37.5350198	,	126.7375112	] },
-      { name: '	[하남돼지집] 배곧신도시점'		, coordinates: [	37.3697689	,	126.7291409	] },
-      { name: '	[하남돼지집] 운정신도시점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 마곡나루역점'		, coordinates: [	37.556108	,	126.8264412	] },
-      { name: '	[하남돼지집] 서대문역점'		, coordinates: [	37.565168	,	126.9657312	] },
-      { name: '	[하남돼지집] 미사신도시점'		, coordinates: [	37.5698779	,	127.1815409	] },
-      { name: '	[하남돼지집] 부천역곡역점'		, coordinates: [	37.48471275	,	126.8074136	] },
-      { name: '	[하남돼지집] 부천현대중동점'		, coordinates: [	37.5034744	,	126.761218	] },
-      { name: '	[하남돼지집] 강릉유천점'		, coordinates: [	37.7565834	,	128.868482	] },
-      { name: '	[하남돼지집] 이천하이닉스점'		, coordinates: [	37.2602772	,	127.4765404	] },
-      { name: '	[하남돼지집] 서여의도점'		, coordinates: [	37.5296344	,	126.9208796	] },
-      { name: '	[하남돼지집] 광명철산점'		, coordinates: [	37.4746926	,	126.8683856	] },
-      { name: '	[하남돼지집] 서울대입구역점'		, coordinates: [	37.4808239	,	126.9504229	] },
-      { name: '	[하남돼지집] 하남 스타필드점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 남영점'		, coordinates: [	37.5360459	,	126.9743434	] },
-      { name: '	[하남돼지집] 오목교역점'		, coordinates: [	37.5255269	,	126.8692563	] },
-      { name: '	[하남돼지집] 일산웨스턴돔점'		, coordinates: [	37.6579216	,	126.7709639	] },
-      { name: '	[하남돼지집] 원주혁신도시점'		, coordinates: [	37.3260339	,	127.9799443	] },
-      { name: '	[하남돼지집] 시흥사거리점'		, coordinates: [	37.4537596	,	126.9018601	] },
-      { name: '	[하남돼지집] 반포점'		, coordinates: [	37.500771	,	127.009393	] },
-      { name: '	[하남돼지집] 연신내1호점'		, coordinates: [	37.6189489	,	126.9228036	] },
-      { name: '	[하남돼지집] 광주 경안점'		, coordinates: [	37.4083126	,	127.2549367	] },
-      { name: '	[하남돼지집] 방학역점'		, coordinates: [	37.6680779	,	127.0444372	] },
-      { name: '	[하남돼지집] 산본역점'		, coordinates: [	37.3594741	,	126.9322136	] },
-      { name: '	[하남돼지집] 학동역점'		, coordinates: [	37.5165895	,	127.0326748	] },
-      { name: '	[하남돼지집] 문정역점'		, coordinates: [	37.48679125	,	127.12263	] },
-      { name: '	[하남돼지집] 정릉점'		, coordinates: [	37.607943	,	127.0005141	] },
-      { name: '	[하남돼지집] 안양 관악역점'		, coordinates: [	37.4131886	,	126.9138831	] },
-      { name: '	[하남돼지집] 노원 하계점'		, coordinates: [	37.6418244	,	127.0704691	] },
-      { name: '	[하남돼지집] 충남홍성점'		, coordinates: [	36.599739	,	126.6470822	] },
-      { name: '	[하남돼지집] 왕십리역점'		, coordinates: [	37.5646347	,	127.0287135	] },
-      { name: '	[하남돼지집] 용인보정점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 이천창전점'		, coordinates: [	37.2810235	,	127.4554682	] },
-      { name: '	[하남돼지집] 수원권선점'		, coordinates: [	37.2524226	,	127.0291167	] },
-      { name: '	[하남돼지집] 의정부금오점'		, coordinates: [	37.7523454	,	127.0691433	] },
-      { name: '	[하남돼지집] 압구정로데오점'		, coordinates: [	37.5260572	,	127.0359707	] },
-      { name: '	[하남돼지집] 위례신도시1호점'		, coordinates: [	37.4661215	,	127.1390998	] },
-      { name: '	[하남돼지집] 의왕포일점'		, coordinates: [	37.3962968	,	126.9845863	] },
-      { name: '	[하남돼지집] 인천구월로데오점'		, coordinates: [	37.4453356	,	126.7035912	] },
-      { name: '	[하남돼지집] 압구정역점'		, coordinates: [	37.5251813	,	127.0265137	] },
-      { name: '	[하남돼지집] 가산디지털역점'		, coordinates: [	37.473849	,	126.8844886	] },
-      { name: '	[하남돼지집] 명동1호점'		, coordinates: [	37.5651073	,	126.9838917	] },
-      { name: '	[하남돼지집] 금정역점'		, coordinates: [	37.3741149	,	126.9412836	] },
-      { name: '	[하남돼지집] 김포사우점'		, coordinates: [	37.6202758	,	126.7175103	] },
-      { name: '	[하남돼지집] 용인보라점'		, coordinates: [	37.2439601	,	127.1088446	] },
-      { name: '	[하남돼지집] 부평역점'		, coordinates: [	37.4918858	,	126.7250364	] },
-      { name: '	[하남돼지집] 세종대점'		, coordinates: [	37.5465633	,	127.0727941	] },
-      { name: '	[하남돼지집] 전주 송천점'		, coordinates: [	35.8696404	,	127.1238298	] },
-      { name: '	[하남돼지집] 강남구청점'		, coordinates: [	37.5257607	,	127.0399898	] },
-      { name: '	[하남돼지집] 세종 도담점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 수서역점'		, coordinates: [	37.4883645	,	127.102734	] },
-      { name: '	[하남돼지집] 대학로점'		, coordinates: [	37.5817586	,	127.0034104	] },
-      { name: '	[하남돼지집] 안산 고잔점'		, coordinates: [	37.3124827	,	126.831212	] },
-      { name: '	[하남돼지집] 분당 서현점'		, coordinates: [	37.3834972	,	127.1213695	] },
-      { name: '	[하남돼지집] 안양 범계점'		, coordinates: [	37.3907435	,	126.953549	] },
-      { name: '	[하남돼지집] 신천1호점'		, coordinates: [	37.5096754	,	127.0823102	] },
-      { name: '	[하남돼지집] 암사점'		, coordinates: [	37.5420017	,	127.1246024	] },
-      { name: '	[하남돼지집] 분당 정자점'		, coordinates: [	37.3507854	,	127.1063437	] },
-      { name: '	[하남돼지집] 군자역점'		, coordinates: [	37.5539538	,	127.0749388	] },
-      { name: '	[하남돼지집] 부천 중동점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 목동점'		, coordinates: [	37.5280314	,	126.8516587	] },
-      { name: '	[하남돼지집] 구로디지털점'		, coordinates: [	37.4839379	,	126.9021807	] },
-      { name: '	[하남돼지집] 양재시민의숲점'		, coordinates: [	37.4689229	,	127.0449285	] },
-      { name: '	[하남돼지집] 울산 일산점'		, coordinates: [	35.4979746	,	129.4286971	] },
-      { name: '	[하남돼지집] 춘천 후평점'		, coordinates: [	37.8795823	,	127.7515819	] },
-      { name: '	[하남돼지집] 역삼1호점'		, coordinates: [	37.5034063	,	127.0401359	] },
-      { name: '	[하남돼지집] 한티역점'		, coordinates: [	37.4986295	,	127.0528854	] },
-      { name: '	[하남돼지집] 화성 석우점'		, coordinates: [	37.219228	,	127.0790927	] },
-      { name: '	[하남돼지집] 면목점'		, coordinates: [	37.5925264	,	127.0864975	] },
-      { name: '	[하남돼지집] 광교 아비뉴프랑점'		, coordinates: [	37.2905989	,	127.0522645	] },
-      { name: '	[하남돼지집] 안양일번가점'		, coordinates: [	37.3991301	,	126.9233625	] },
-      { name: '	[하남돼지집] 강릉 입암점'		, coordinates: [	37.7549139	,	128.9173785	] },
-      { name: '	[하남돼지집] 선릉 1호점'		, coordinates: [	37.5035345	,	127.0515452	] },
-      { name: '	[하남돼지집] 분당 수내점'		, coordinates: [	37.3807148	,	127.1165736	] },
-      { name: '	[하남돼지집] 오산 궐동점'		, coordinates: [	37.16119	,	127.0559	] },
-      { name: '	[하남돼지집] 기흥구청점'		, coordinates: [	37.2830028	,	127.1082406	] },
-      { name: '	[하남돼지집] 대전 노은점'		, coordinates: [	36.3741072	,	127.3206436	] },
-      { name: '	[하남돼지집] 용인 수지점'		, coordinates: [	37.3249043	,	127.0957552	] },
-      { name: '	[하남돼지집] 부산 하단점'		, coordinates: [	35.1094098	,	128.9654868	] },
-      { name: '	[하남돼지집] 교대점'		, coordinates: [	37.491497	,	127.0101966	] },
-      { name: '	[하남돼지집] 부산 동래점'		, coordinates: [	35.2063186	,	129.080337	] },
-      { name: '	[하남돼지집] 안양 평촌점'		, coordinates: [	37.384152	,	126.9616446	] },
-      { name: '	[하남돼지집] 대전 전민점'		, coordinates: [	36.3978742	,	127.4035531	] },
-      { name: '	[하남돼지집] 성수역점'		, coordinates: [	37.5428909	,	127.061905	] },
-      { name: '	[하남돼지집] 대전 관저점'		, coordinates: [	36.3003989	,	127.3384106	] },
-      { name: '	[하남돼지집] 당산역점'		, coordinates: [	37.5350429	,	126.9019211	] },
-      { name: '	[하남돼지집] 중계은행점'		, coordinates: [	37.6661065	,	127.0694863	] },
-      { name: '	[하남돼지집] 인천 구월길병원점'		, coordinates: [	37.4501063	,	126.7085302	] },
-      { name: '	[하남돼지집] 화성 동탄점'		, coordinates: [	37.20770845	,	127.0655209	] },
-      { name: '	[하남돼지집] 인천 청라점'		, coordinates: [	37.5287978	,	126.6556694	] },
-      { name: '	[하남돼지집] 분당 미금점'		, coordinates: [	37.3476661	,	127.1116568	] },
-      { name: '	[하남돼지집] 신논현역점'		, coordinates: [	37.5071061	,	127.0260796	] },
-      { name: '	[하남돼지집] 일산 라페스타점'		, coordinates: [	37.7156533	,	126.7886905	] },
-      { name: '	[하남돼지집] 대전 둔산점'		, coordinates: [	36.3578999	,	127.3743724	] },
-      { name: '	[하남돼지집] 인천 논현점'		, coordinates: [	37.4027377	,	126.7225068	] },
-      { name: '	[하남돼지집] 남양주 별내점'		, coordinates: [	0	,	0	] },
-      { name: '	[하남돼지집] 용인 동백점'		, coordinates: [	37.2756211	,	127.1572051	] },
-      { name: '	[하남돼지집] 강남서초점'		, coordinates: [	37.4887832	,	127.0066043	] },
-      { name: '	[하남돼지집] 송파 방이점'		, coordinates: [	37.5107104	,	127.1199701	] },
-      { name: '	[하남돼지집] 수원 천천점'		, coordinates: [	37.2971535	,	126.9831243	] },
-      { name: '	[하남돼지집] 강동 명일점'		, coordinates: [	37.553043	,	127.142694	] },
-      { name: '	[하남돼지집] 송파 풍납점'		, coordinates: [	37.531213	,	127.1181055	] },
-      { name: '	[하남돼지집] 춘천 퇴계점'		, coordinates: [	37.7624902	,	127.7107666	] }
+    // 사용자의 위치 및 오차 반경 표시
+    navigator.geolocation.getCurrentPosition(function (position) {
+        var latlng = [position.coords.latitude, position.coords.longitude];
 
+        // 사용자의 위치 마커 추가
+        L.marker(latlng).addTo(map)
+            .bindPopup('Your Location').openPopup();
 
-
-      
-    ];
-
-    // 마커를 담을 그룹 생성
-    var markers = L.layerGroup().addTo(map);
-
-    var customIcon = L.icon({
-      iconUrl: 'https://i.ibb.co/crdYdtD/Pngtree-hand-painted-hand-painted-garlic-3903659.png',
-      iconSize: [40, 40], // 아이콘 크기 조정
-      iconAnchor: [18, 45], // 마커의 중심을 설정
-      popupAnchor: [0, -32] // 팝업이 표시될 위치 설정
+        // 오차 반경을 원 형태로 표시
+        L.circle(latlng, {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: position.coords.accuracy // 오차 반경 값 설정
+        }).addTo(map);
+    }, function (error) {
+        console.error('Error getting user location:', error.message);
     });
+</script>
 
-    var pigIcon = L.icon({
-      iconUrl: 'https://i.ibb.co/178wqt0/Pngtree-cute-pretty-pig-face-clipart-5902748.png',
-      iconSize: [30, 30], // 아이콘 크기 조정
-      iconAnchor: [18, 45], // 마커의 중심을 설정
-      popupAnchor: [0, -32] // 팝업이 표시될 위치 설정
-    });
-
-
-
-  
-
-    // 좌표와 이름을 이용하여 마커 생성 및 지도에 추가
-    locations.forEach(function (location) {
-      var marker = L.marker(location.coordinates, {icon: customIcon}).addTo(markers);
-      marker.bindPopup(location.name); // 마커를 클릭하면 이름이 표시되도록 설정
-    });
-
-
-    // 검색 기능을 위한 함수
-    function searchMarkers() {
-      var searchInput = document.getElementById('search').value.toLowerCase();
-
-      markers.eachLayer(function (marker) {
-        var markerName = marker.getPopup().getContent().toLowerCase();
-        if (markerName.includes(searchInput)) {
-          marker.addTo(map);
-        } else {
-          map.removeLayer(marker);
-        }
-      });
-    }
-
-    // 사용자의 현재 위치를 가져와 지도에 표시하는 함수
-    function showUserLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          
-          var userCoordinates = [position.coords.latitude, position.coords.longitude];
-          
-          var usermarker = L.marker(userCoordinates, {icon: pigIcon}).addTo(markers);
-          
-          userMarker.bindPopup('YOU').openPopup();
-          map.setView(userCoordinates, 15); // 사용자의 위치로 지도 이동 (15는 축적 값)
-        }, function (error) {
-          console.error('현재 위치를 가져오는 데 실패했습니다:', error);
-        });
-      } else {
-        console.error('Geolocation이 지원되지 않습니다.');
-      }
-    }
-
-    // 페이지 로드 시 사용자의 위치를 가져와 지도에 표시
-    showUserLocation();
-  </script>
 </body>
 </html>
