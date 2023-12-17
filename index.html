@@ -1,67 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입 및 로그인 예제</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-        }
-
-        form {
-            max-width: 400px;
-            margin: auto;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 20px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        button:hover {
-            opacity: 0.8;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Snowfall Effect</title>
 </head>
 <body>
-
-    <h2>회원가입</h2>
-    <form action="/signup" method="post">
-        <label for="signup_username">사용자 이름:</label>
-        <input type="text" id="signup_username" name="signup_username" required>
-
-        <label for="signup_password">비밀번호:</label>
-        <input type="password" id="signup_password" name="signup_password" required>
-
-        <button type="submit">가입하기</button>
-    </form>
-
-    <h2>로그인</h2>
-    <form action="/login" method="post">
-        <label for="login_username">사용자 이름:</label>
-        <input type="text" id="login_username" name="login_username" required>
-
-        <label for="login_password">비밀번호:</label>
-        <input type="password" id="login_password" name="login_password" required>
-
-        <button type="submit">로그인</button>
-    </form>
-
+  <div class="snowfall"></div>
+  <script src="snowfall.js"></script>
 </body>
 </html>
