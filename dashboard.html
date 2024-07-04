@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대시보드</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 300px; margin: 0 auto; padding: 20px; }
+        input[type="text"], input[type="time"] {
+            width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;
+        }
+        button { width: 100%; padding: 10px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>이름과 시간 입력</h2>
+        <form id="dataForm">
+            <input type="text" id="name" placeholder="이름" required>
+            <input type="time" id="time" required>
+            <button type="button" onclick="submitData()">제출</button>
+        </form>
+    </div>
+
+    <script>
+        function submitData() {
+            const name = document.getElementById('name').value;
+            const time = document.getElementById('time').value;
+
+            if (name && time) {
+                alert(`이름: ${name}\n시간: ${time}`);
+            } else {
+                alert('모든 필드를 입력해주세요.');
+            }
+        }
+    </script>
+</body>
+</html>
