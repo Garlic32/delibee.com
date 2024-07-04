@@ -1,48 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snowfall Effect</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 및 로그인</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+        }
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-  <canvas id="snowfallCanvas"></canvas>
+    <div class="container">
+        <h2>회원가입</h2>
+        <input type="text" id="signup-username" placeholder="아이디" required>
+        <input type="password" id="signup-password" placeholder="비밀번호" required>
+        <button onclick="signup()">회원가입</button>
+        <p class="error" id="signup-error"></p>
+    </div>
 
-  <script>
-    const canvas = document.getElementById("snowfallCanvas");
-    const ctx = canvas.getContext("2d");
+    <div class="container" style="margin-top: 20px;">
+        <h2>로그인</h2>
+        <input type="text" id="login-username" placeholder="아이디" required>
+        <input type="password" id="login-password" placeholder="비밀번호" required>
+        <button onclick="login()">로그인</button>
+        <p class="error" id="login-error"></p>
+    </div>
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    <script>
+        function signup() {
+            const username = document.getElementById('signup-username').value;
+            const password = document.getElementById('signup-password').value;
+            const errorElement = document.getElementById('signup-error');
 
-    function createSnowflake() {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height;
-      const size = Math.random() * 5 + 2;
+            if (localStorage.getItem(username)) {
+                errorElement.textContent = '이미 존재하는 아이디입니다.';
+            } else {
+                localStorage.setItem(username, password);
+                errorElement.textContent = '회원가입이 완료되었습니다.';
+            }
+        }
 
-      ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
-      ctx.fillStyle = "#fff"; // 눈송이 색상
-      ctx.fill();
-    }
+        function login() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const errorElement = document.getElementById('login-error');
 
-    function animateSnowfall() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < 50; i++) {
-        createSnowflake();
-      }
-
-      requestAnimationFrame(animateSnowfall);
-    }
-
-    animateSnowfall();
-  </script>
+            const storedPassword = localStorage.getItem(username);
+            if (storedPassword === null) {
+                errorElement.textContent = '존재하지 않는 아이디입니다.';
+            } else if (storedPassword !== password) {
+                errorElement.textContent = '비밀번호가 틀렸습니다.';
+            } else {
+                errorElement.textContent = '로그인 성공!';
+            }
+        }
+    </script>
 </body>
 </html>
