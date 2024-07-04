@@ -11,10 +11,11 @@
             width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;
         }
         button { width: 100%; padding: 10px; margin: 5px 0; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="signupLoginContainer">
         <h2>회원가입</h2>
         <form id="signupForm">
             <input type="email" id="signupEmail" placeholder="이메일" required>
@@ -26,6 +27,15 @@
             <input type="email" id="loginEmail" placeholder="이메일" required>
             <input type="password" id="loginPassword" placeholder="비밀번호" required>
             <button type="button" onclick="login()">로그인</button>
+        </form>
+    </div>
+
+    <div class="container hidden" id="dashboardContainer">
+        <h2>이름과 시간 입력</h2>
+        <form id="dataForm">
+            <input type="text" id="name" placeholder="이름" required>
+            <input type="time" id="time" required>
+            <button type="button" onclick="submitData()">제출</button>
         </form>
     </div>
 
@@ -48,9 +58,21 @@
             const user = users.find(u => u.email === email && u.password === password);
             if (user) {
                 alert('로그인 성공!');
-                window.location.href = 'dashboard.html';
+                document.getElementById('signupLoginContainer').classList.add('hidden');
+                document.getElementById('dashboardContainer').classList.remove('hidden');
             } else {
                 alert('로그인 실패: 이메일 또는 비밀번호가 틀렸습니다.');
+            }
+        }
+
+        function submitData() {
+            const name = document.getElementById('name').value;
+            const time = document.getElementById('time').value;
+
+            if (name && time) {
+                alert(`이름: ${name}\n시간: ${time}`);
+            } else {
+                alert('모든 필드를 입력해주세요.');
             }
         }
     </script>
