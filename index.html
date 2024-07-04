@@ -1,97 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 및 로그인</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f0f0;
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 300px; margin: 0 auto; padding: 20px; }
+        input[type="email"], input[type="password"], input[type="text"], input[type="time"] {
+            width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;
         }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        .container h2 {
-            margin-bottom: 20px;
-        }
-        .container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .container button:hover {
-            background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-        }
+        button { width: 100%; padding: 10px; margin: 5px 0; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>회원가입</h2>
-        <input type="text" id="signup-username" placeholder="아이디" required>
-        <input type="password" id="signup-password" placeholder="비밀번호" required>
-        <button onclick="signup()">회원가입</button>
-        <p class="error" id="signup-error"></p>
-    </div>
-
-    <div class="container" style="margin-top: 20px;">
+        <form id="signupForm">
+            <input type="email" id="signupEmail" placeholder="이메일" required>
+            <input type="password" id="signupPassword" placeholder="비밀번호" required>
+            <button type="button" onclick="signup()">회원가입</button>
+        </form>
         <h2>로그인</h2>
-        <input type="text" id="login-username" placeholder="아이디" required>
-        <input type="password" id="login-password" placeholder="비밀번호" required>
-        <button onclick="login()">로그인</button>
-        <p class="error" id="login-error"></p>
+        <form id="loginForm">
+            <input type="email" id="loginEmail" placeholder="이메일" required>
+            <input type="password" id="loginPassword" placeholder="비밀번호" required>
+            <button type="button" onclick="login()">로그인</button>
+        </form>
     </div>
 
     <script>
-        function signup() {
-            const username = document.getElementById('signup-username').value;
-            const password = document.getElementById('signup-password').value;
-            const errorElement = document.getElementById('signup-error');
+        const users = [];
 
-            if (localStorage.getItem(username)) {
-                errorElement.textContent = '이미 존재하는 아이디입니다.';
-            } else {
-                localStorage.setItem(username, password);
-                errorElement.textContent = '회원가입이 완료되었습니다.';
-            }
+        function signup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            const user = { email: email, password: password };
+            users.push(user);
+            alert('회원가입 성공!');
         }
 
         function login() {
-            const username = document.getElementById('login-username').value;
-            const password = document.getElementById('login-password').value;
-            const errorElement = document.getElementById('login-error');
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
 
-            const storedPassword = localStorage.getItem(username);
-            if (storedPassword === null) {
-                errorElement.textContent = '존재하지 않는 아이디입니다.';
-            } else if (storedPassword !== password) {
-                errorElement.textContent = '비밀번호가 틀렸습니다.';
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                alert('로그인 성공!');
+                window.location.href = 'dashboard.html';
             } else {
-                errorElement.textContent = '로그인 성공!';
+                alert('로그인 실패: 이메일 또는 비밀번호가 틀렸습니다.');
             }
         }
     </script>
