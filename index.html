@@ -71,7 +71,9 @@
             const time = document.getElementById('time').value;
 
             if (name && time) {
-                alert(`이름: ${name}\n시간: ${time}`);
+                document.getElementById('displayName').innerText = `이름: ${name}`;
+                document.getElementById('displayTime').innerText = `시간: ${time}`;
+                document.getElementById('displayData').classList.remove('hidden');
                 document.getElementById('dataForm').reset();
             } else {
                 alert('모든 필드를 입력해주세요.');
