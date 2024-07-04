@@ -49,6 +49,7 @@
             const user = { email: email, password: password };
             users.push(user);
             alert('회원가입 성공!');
+            document.getElementById('signupForm').reset();
         }
 
         function login() {
@@ -71,6 +72,7 @@
 
             if (name && time) {
                 alert(`이름: ${name}\n시간: ${time}`);
+                document.getElementById('dataForm').reset();
             } else {
                 alert('모든 필드를 입력해주세요.');
             }
