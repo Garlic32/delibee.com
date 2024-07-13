@@ -5,90 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Delibee </title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input, textarea {
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container">
-        <h1> Welcome to Delibee! </h1>
+        <h1>Reservation Form</h1>
+        <form id="reservationForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
 
-        <div id="auth-forms">
-            <h2>Sign Up</h2>
-            <form id="signup-form">
-                <input type="email" id="signup-email" placeholder="Email" required>
-                <input type="password" id="signup-password" placeholder="Password" required>
-                <input type="text" id="signup-nickname" placeholder="Nickname" required>
-                <button type="submit">Sign Up</button>
-            </form>
+            <label for="place">Place:</label>
+            <input type="text" id="place" name="place" required>
 
-            <h2>Log In</h2>
-            <form id="login-form">
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-password" placeholder="Password" required>
-                <button type="submit">Log In</button>
-            </form>
-        </div>
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
 
-        <div id="user-area" style="display: none;">
-            <h2>Welcome, <span id="user-nickname"></span>!</h2>
-            <form id="preference-form">
-                <input type="datetime-local" id="pref-time" required>
-                <input type="text" id="pref-place" placeholder="Place" required>
-                <input type="text" id="pref-food" placeholder="Food" required>
-                <button type="submit">Submit Preferences</button>
-            </form>
-        </div>
+            <label for="menu">Menu:</label>
+            <textarea id="menu" name="menu" rows="4" required></textarea>
 
-        <div id="preferences-list">
-            <h2>User Preferences</h2>
-            <ul id="preferences"></ul>
-        </div>
+            <label for="time">Time:</label>
+            <input type="datetime-local" id="time" name="time" required>
+
+            <button type="submit">Submit</button>
+        </form>
     </div>
 
     <script>
-        let currentUser = null;
+        document.getElementById('reservationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const place = document.getElementById('place').value;
+            const phone = document.getElementById('phone').value;
+            const menu = document.getElementById('menu').value;
+            const time = document.getElementById('time').value;
 
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            currentUser = {
-                email: document.getElementById('signup-email').value,
-                nickname: document.getElementById('signup-nickname').value
-            };
-            showUserArea();
+            const subject = encodeURIComponent('New Reservation');
+            const body = encodeURIComponent(`Name: ${name}\nPlace: ${place}\nPhone Number: ${phone}\nMenu: ${menu}\nTime: ${time}`);
+            const mailtoLink = `mailto:specific-email@example.com?subject=${subject}&body=${body}`;
+
+            window.location.href = mailtoLink;
         });
-
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            currentUser = {
-                email: document.getElementById('login-email').value,
-                nickname: 'User' // In a real app, you'd fetch the nickname from a server
-            };
-            showUserArea();
-        });
-
-        document.getElementById('preference-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const time = document.getElementById('pref-time').value;
-            const place = document.getElementById('pref-place').value;
-            const food = document.getElementById('pref-food').value;
-            addPreference(time, place, food);
-            this.reset(); // Clear the form after submission
-        });
-
-        function showUserArea() {
-            document.getElementById('auth-forms').style.display = 'none';
-            document.getElementById('user-area').style.display = 'block';
-            document.getElementById('user-nickname').textContent = currentUser.nickname;
-        }
-
-        function addPreference(time, place, food) {
-            const list = document.getElementById('preferences');
-            const li = document.createElement('li');
-            const now = new Date();
-            li.innerHTML = `
-                <strong>${currentUser.nickname}</strong> (Input time: ${now.toLocaleString()})
-                <br>Preference: ${time} at ${place}, eating ${food}
-            `;
-            list.prepend(li); // Add new item to the top of the list
-        }
     </script>
 </body>
 </html>
