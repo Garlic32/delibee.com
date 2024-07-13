@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Preferences App</title>
+    <title> Welcome to Delibee! </title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Food Preferences App</h1>
+        <h1> Buzz! Buzz! </h1>
 
         <div id="auth-forms">
             <h2>Sign Up</h2>
@@ -36,16 +36,59 @@
                 <button type="submit">Submit Preferences</button>
             </form>
         </div>
+
+        <div id="preferences-list">
+            <h2>User Preferences</h2>
+            <ul id="preferences"></ul>
+        </div>
     </div>
 
     <script>
-        // Your JavaScript code here
+        let currentUser = null;
+
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            currentUser = {
+                email: document.getElementById('signup-email').value,
+                nickname: document.getElementById('signup-nickname').value
+            };
+            showUserArea();
+        });
+
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
+            currentUser = {
+                email: document.getElementById('login-email').value,
+                nickname: 'User' // In a real app, you'd fetch the nickname from a server
+            };
+            showUserArea();
+        });
+
+        document.getElementById('preference-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const time = document.getElementById('pref-time').value;
+            const place = document.getElementById('pref-place').value;
+            const food = document.getElementById('pref-food').value;
+            addPreference(time, place, food);
+            this.reset(); // Clear the form after submission
+        });
+
+        function showUserArea() {
             document.getElementById('auth-forms').style.display = 'none';
             document.getElementById('user-area').style.display = 'block';
-            document.getElementById('user-nickname').textContent = 'User'; // This would normally be set to the actual user's nickname
-        });
+            document.getElementById('user-nickname').textContent = currentUser.nickname;
+        }
+
+        function addPreference(time, place, food) {
+            const list = document.getElementById('preferences');
+            const li = document.createElement('li');
+            const now = new Date();
+            li.innerHTML = `
+                <strong>${currentUser.nickname}</strong> (Input time: ${now.toLocaleString()})
+                <br>Preference: ${time} at ${place}, eating ${food}
+            `;
+            list.prepend(li); // Add new item to the top of the list
+        }
     </script>
 </body>
 </html>
