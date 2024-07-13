@@ -1,0 +1,108 @@
+/* Honeybee Food Shipping Theme CSS */
+
+:root {
+  --honey-gold: #ffa500;
+  --bee-yellow: #ffd700;
+  --hive-brown: #8b4513;
+  --flower-pink: #ffc0cb;
+  --sky-blue: #87ceeb;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--sky-blue);
+  color: var(--hive-brown);
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%2387ceeb"/><path d="M15 15L85 85M85 15L15 85" stroke="%23ffffff" stroke-width="2"/></svg>');
+  background-repeat: repeat;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+  color: var(--honey-gold);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h2 {
+  font-size: 1.8em;
+  border-bottom: 2px solid var(--bee-yellow);
+  padding-bottom: 10px;
+  margin-top: 30px;
+}
+
+form {
+  background-color: var(--flower-pink);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+}
+
+input {
+  background-color: #fff;
+  border: 2px solid var(--bee-yellow);
+}
+
+button {
+  background-color: var(--honey-gold);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--hive-brown);
+}
+
+#user-area {
+  background-color: var(--bee-yellow);
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Honeycomb pattern for user area */
+#user-area::before {
+  content: "";
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="56" height="100" viewBox="0 0 56 100"><path d="M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100" fill="none" stroke="%23ffa500" stroke-width="2"/></svg>');
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+#user-nickname {
+  font-weight: bold;
+  color: var(--hive-brown);
+}
+
+/* Bee cursor */
+body {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%23ffd700"/><circle cx="8" cy="9" r="2" fill="%23000"/><circle cx="16" cy="9" r="2" fill="%23000"/><path d="M7 14a5 5 0 0 0 10 0" fill="none" stroke="%23000" stroke-width="2"/></svg>'), auto;
+}
