@@ -1,84 +1,56 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입 및 로그인</title>
+    <title>Food Preferences App</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .container { max-width: 300px; margin: 0 auto; padding: 20px; }
-        input[type="email"], input[type="password"], input[type="text"], input[type="time"] {
-            width: 100%; padding: 10px; margin: 5px 0; box-sizing: border-box;
-        }
-        button { width: 100%; padding: 10px; margin: 5px 0; }
-        .hidden { display: none; }
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; }
+        form { margin-bottom: 20px; }
+        input, button { margin: 5px 0; padding: 5px; }
     </style>
 </head>
 <body>
-    <div class="container" id="signupLoginContainer">
-        <h2>회원가입</h2>
-        <form id="signupForm">
-            <input type="email" id="signupEmail" placeholder="이메일" required>
-            <input type="password" id="signupPassword" placeholder="비밀번호" required>
-            <button type="button" onclick="signup()">회원가입</button>
+    <h1>Food Preferences App</h1>
+
+    <div id="auth-forms">
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <input type="email" id="signup-email" placeholder="Email" required><br>
+            <input type="password" id="signup-password" placeholder="Password" required><br>
+            <input type="text" id="signup-nickname" placeholder="Nickname" required><br>
+            <button type="submit">Sign Up</button>
         </form>
-        <h2>로그인</h2>
-        <form id="loginForm">
-            <input type="email" id="loginEmail" placeholder="이메일" required>
-            <input type="password" id="loginPassword" placeholder="비밀번호" required>
-            <button type="button" onclick="login()">로그인</button>
+
+        <h2>Log In</h2>
+        <form id="login-form">
+            <input type="email" id="login-email" placeholder="Email" required><br>
+            <input type="password" id="login-password" placeholder="Password" required><br>
+            <button type="submit">Log In</button>
         </form>
     </div>
 
-    <div class="container hidden" id="dashboardContainer">
-        <h2>이름과 시간 입력</h2>
-        <form id="dataForm">
-            <input type="text" id="name" placeholder="이름" required>
-            <input type="time" id="time" required>
-            <button type="button" onclick="submitData()">제출</button>
+    <div id="user-area" style="display: none;">
+        <h2>Welcome, <span id="user-nickname"></span>!</h2>
+        <form id="preference-form">
+            <input type="datetime-local" id="pref-time" required><br>
+            <input type="text" id="pref-place" placeholder="Place" required><br>
+            <input type="text" id="pref-food" placeholder="Food" required><br>
+            <button type="submit">Submit Preferences</button>
         </form>
     </div>
 
     <script>
-        const users = [];
+        // This is where you'd typically add JavaScript to handle form submissions,
+        // authentication, and showing/hiding appropriate sections.
+        // For demonstration purposes, we'll just add a simple toggle:
 
-        function signup() {
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            
-            const user = { email: email, password: password };
-            users.push(user);
-            alert('회원가입 성공!');
-            document.getElementById('signupForm').reset();
-        }
-
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            const user = users.find(u => u.email === email && u.password === password);
-            if (user) {
-                alert('로그인 성공!');
-                document.getElementById('signupLoginContainer').classList.add('hidden');
-                document.getElementById('dashboardContainer').classList.remove('hidden');
-            } else {
-                alert('로그인 실패: 이메일 또는 비밀번호가 틀렸습니다.');
-            }
-        }
-
-        function submitData() {
-            const name = document.getElementById('name').value;
-            const time = document.getElementById('time').value;
-
-            if (name && time) {
-                document.getElementById('displayName').innerText = `이름: ${name}`;
-                document.getElementById('displayTime').innerText = `시간: ${time}`;
-                document.getElementById('displayData').classList.remove('hidden');
-                document.getElementById('dataForm').reset();
-            } else {
-                alert('모든 필드를 입력해주세요.');
-            }
-        }
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('auth-forms').style.display = 'none';
+            document.getElementById('user-area').style.display = 'block';
+            document.getElementById('user-nickname').textContent = 'User'; // This would normally be set to the actual user's nickname
+        });
     </script>
 </body>
 </html>
