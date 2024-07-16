@@ -3,94 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Delibee </title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label {
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        input, textarea {
-            margin-bottom: 20px;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title> Delibee /title>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Reservation Form</h1>
-        <form id="reservationForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-
-            <label for="place">Place:</label>
-            <input type="text" id="place" name="place" required>
-
-            <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required>
-
-            <label for="menu">Menu:</label>
-            <textarea id="menu" name="menu" rows="4" required></textarea>
-
-            <label for="time">Time:</label>
-            <input type="datetime-local" id="time" name="time" required>
-
-            <button type="submit">Submit</button>
-        </form>
-    </div>
+    <h1> Delibee </h1>
+    <form id="eventForm" onsubmit="return sendEmail()">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required><br><br>
+        
+        <label for="place">Place:</label>
+        <input type="text" id="place" name="place" required><br><br>
+        
+        <input type="submit" value="Submit">
+    </form>
 
     <script>
-        document.getElementById('reservationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const place = document.getElementById('place').value;
-            const phone = document.getElementById('phone').value;
-            const menu = document.getElementById('menu').value;
-            const time = document.getElementById('time').value;
+        function sendEmail() {
+            var name = document.getElementById('name').value;
+            var time = document.getElementById('time').value;
+            var place = document.getElementById('place').value;
 
-            const subject = encodeURIComponent('New Reservation');
-            const body = encodeURIComponent(`Name: ${name}\nPlace: ${place}\nPhone Number: ${phone}\nMenu: ${menu}\nTime: ${time}`);
-            const mailtoLink = `mailto:iwonjin32@gmail.com?subject=${subject}&body=${body}`;
+            var subject = "New Event Information";
+            var body = "Name: " + name + "%0D%0A" +
+                       "Time: " + time + "%0D%0A" +
+                       "Place: " + place;
 
-            window.location.href = mailtoLink;
-        });
+            window.location.href = "mailto:akksown1@gmail.com?subject=" + subject + "&body=" + body;
+
+            return false;
+        }
     </script>
 </body>
 </html>
